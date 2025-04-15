@@ -24,7 +24,7 @@ export default function MyLearningsPage() {
 
   return (
     <Layout>
-      <div>
+      <div className="max-w-4xl w-full self-center mx-auto">
         <h1 className="text-2xl font-bold mb-6">My Learnings</h1>
 
         <Tabs defaultValue="in-progress" className="w-full">

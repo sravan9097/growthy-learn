@@ -11,16 +11,14 @@ interface HeaderProps {
 
 export function Header({ userName = "Sarah Chen", userImage }: HeaderProps) {
   return (
-    <header className="w-full flex items-center justify-between px-6 py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="relative w-96">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-        <input
-          type="search"
-          placeholder="Search TILs, courses..."
-          className="w-full h-9 pl-8 pr-4 rounded-md border bg-background"
-        />
+    <header className="w-full flex justify-between items-end px-6 py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="col-span-1 flex h-full justify-start items-center">
+        <a className="flex" href="/"> 
+        
+        <img src="/GrowthyIcon-Djqs-wG6.svg" alt="Growthy Icon" className="w-8 h-8 mr-2 hover:cursor-pointer"></img>
+          <div className="font-medium text-2xl text-stone-900 hover:cursor-pointer">Growthy</div>
+        </a>
       </div>
-      
       <div className="flex items-center gap-2">
         <Avatar className="h-8 w-8">
           <AvatarImage src={userImage} />

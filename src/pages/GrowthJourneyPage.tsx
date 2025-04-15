@@ -26,7 +26,7 @@ export default function GrowthJourneyPage() {
 
   return (
     <Layout>
-      <div>
+      <div className="max-w-4xl w-full self-center mx-auto">
         <div className="mb-6">
           <Link to="/">
             <Button variant="ghost" className="pl-0">
@@ -62,7 +62,7 @@ export default function GrowthJourneyPage() {
         </div>
 
         {/* Timeline section */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        {/* <div className="bg-white rounded-lg shadow-sm p-6">
           <h2 className="text-lg font-semibold mb-4">Activity Timeline</h2>
           
           <div className="space-y-6">
@@ -70,9 +70,7 @@ export default function GrowthJourneyPage() {
               <div key={index} className="border-b pb-4 last:border-b-0 last:pb-0">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="font-medium">{data.month}</h3>
-                  <div className="text-sm text-growthy-neutral-500">
-                    {currentYear}
-                  </div>
+                  
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="bg-growthy-green-50 p-3 rounded-lg">
@@ -91,7 +89,7 @@ export default function GrowthJourneyPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );

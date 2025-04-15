@@ -34,8 +34,8 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
-        <section className="mb-12">
+      <div className="max-w-4xl self-center w-full">
+        <section >
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-2xl font-semibold mb-2">Welcome to Growthy</h1>
@@ -43,7 +43,6 @@ export default function HomePage() {
             </div>
             <Link to="/reflect">
               <Button className="gap-2">
-                <Brain className="h-4 w-4" />
                 Reflect Now
               </Button>
             </Link>
@@ -66,8 +65,8 @@ export default function HomePage() {
           </Card>
         </section>
 
-        <section>
-          <div className="flex items-center justify-between mb-6">
+        <section >
+          <div className="flex items-center justify-between my-6">
             <h2 className="text-xl font-semibold">Recent TILs</h2>
             <Button variant="ghost" className="gap-2">
               View All <ArrowRight className="h-4 w-4" />
@@ -75,18 +74,27 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-4">
+          <h3 className="text-lg font-normal">Today</h3>
             {recentTils.map((til) => (
-              <Card key={til.id} className="p-4 hover:bg-accent/5 transition-colors cursor-pointer">
+              <Card key={til.id} className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-medium mb-1">{til.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {til.author} · {til.timeAgo}
-                    </p>
+                    <h3 className="font-normal">{til.title}</h3>
                   </div>
-                  <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                    {til.theme}
-                  </span>
+                  
+                </div>
+              </Card>
+            ))}
+          </div>
+          <div className="space-y-4 mt-6">
+          <h3 className="text-lg font-normal">Yesterday</h3>
+            {recentTils.map((til) => (
+              <Card key={til.id} className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-normal">{til.title}</h3>
+                  </div>
+                  
                 </div>
               </Card>
             ))}

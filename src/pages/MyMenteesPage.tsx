@@ -40,10 +40,10 @@ export default function MyMenteesPage() {
 
   return (
     <Layout>
-      <div>
+      <div className="max-w-4xl w-full self-center mx-auto">
         <h1 className="text-2xl font-bold mb-6">My Mentees</h1>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className=" flex w-full flex-wrap flex-col gap-6">
           {mentees.map((mentee) => (
             <Card key={mentee.id}>
               <CardHeader className="pb-2">

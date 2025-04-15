@@ -15,10 +15,13 @@ export function CourseCard({ title, status = "not-started", onClick }: CourseCar
   return (
     <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
       <CardHeader className="p-4 pb-2">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-start items-center">
           <div className="rounded-full bg-primary/10 p-2 text-primary">
             <Book className="h-5 w-5" />
           </div>
+          <CardContent className="p-2 w-auto ">
+            <CardTitle className="text-lg">{title}</CardTitle>
+          </CardContent>
           {status === "in-progress" && (
             <Badge variant="outline" className="bg-growthy-green-100 text-growthy-green-500 hover:bg-growthy-green-200">
               In Progress
@@ -31,10 +34,8 @@ export function CourseCard({ title, status = "not-started", onClick }: CourseCar
           )}
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-2">
-        <CardTitle className="text-lg">{title}</CardTitle>
-      </CardContent>
-      <CardFooter className="p-4 pt-0">
+     
+      <CardFooter className="pb-3">
         <Button variant="ghost" className="text-primary p-0" size="sm">
           <span>{status === "not-started" ? "Start Course" : "Continue"}</span>
           <ArrowRight className="h-4 w-4 ml-1" />
