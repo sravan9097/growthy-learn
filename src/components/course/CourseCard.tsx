@@ -4,16 +4,28 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Book, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
+import { useNavigate } from 'react-router-dom';
 interface CourseCardProps {
+  id: number;
   title: string;
   status?: "not-started" | "in-progress" | "completed";
-  onClick?: () => void;
+  onClick?: () => void ;
 }
 
-export function CourseCard({ title, status = "not-started", onClick }: CourseCardProps) {
+export function CourseCard({ id , title, status = "not-started", onClick }: CourseCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      // Default navigation logic
+      navigate(`/course/${id}`); // You can use an ID or slug instead of title if preferred
+    }
+  };
+
   return (
-    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
+    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={handleClick}>
       <CardHeader className="p-4 pb-2">
         <div className="flex justify-start items-center">
           <div className="rounded-full bg-primary/10 p-2 text-primary">

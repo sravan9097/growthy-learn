@@ -26,21 +26,21 @@ export default function ReflectPage() {
 
   return (
     <Layout>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl w-full self-center mx-auto">
         <div className="mb-6">
           <Link to="/">
             <Button variant="ghost" className="pl-0">
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="mx-2 h-4 w-4" />
               Back to Home
             </Button>
           </Link>
         </div>
 
-        <h1 className="text-2xl font-bold mb-6">Create a TIL Reflection</h1>
+        <h1 className="text-2xl font-bold mb-6">Create a TIL</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-8">
-            <h2 className="text-lg font-medium mb-4">Choose a Reflection Theme</h2>
+            <h2 className="text-lg font-regular mb-4">Learning isn't just about tech. Your takeaway could be about any of the following aspects</h2>
             <ReflectionThemeSelector 
               selectedTheme={selectedTheme} 
               onSelectTheme={setSelectedTheme}
@@ -48,7 +48,7 @@ export default function ReflectPage() {
           </div>
 
           <div className="space-y-4 mb-6">
-            <div>
+            {/* <div>
               <label htmlFor="title" className="block mb-2 font-medium">
                 Title
               </label>
@@ -59,15 +59,15 @@ export default function ReflectPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-            </div>
+            </div> */}
 
             <div>
-              <label htmlFor="reflection" className="block mb-2 font-medium">
-                What did you learn?
+              <label htmlFor="reflection" className="block text-lg mb-2 font-regular">
+              What are the key takeaways from your work today?
               </label>
               <Textarea
                 id="reflection"
-                placeholder="Share your reflection in detail. What did you learn? Why is it important? How will you apply this knowledge?"
+                placeholder="Write your reflection here."
                 rows={10}
                 value={reflection}
                 onChange={(e) => setReflection(e.target.value)}
@@ -78,7 +78,7 @@ export default function ReflectPage() {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" className="bg-growthy-green-500 hover:bg-growthy-green-600" disabled={!selectedTheme || !title || !reflection}>
+            <Button type="submit"  >
               Submit Reflection
             </Button>
           </div>

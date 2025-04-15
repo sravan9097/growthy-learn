@@ -14,6 +14,9 @@ import GrowthJourneyPage from "./pages/GrowthJourneyPage";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import NotFound from "./pages/NotFound";
 
+
+
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -25,7 +28,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/courses/:id" element={<CourseDetailPage />} />
+          <Route path="/course/:id" element={<CourseDetailPage />} />
           <Route path="/my-learnings" element={<MyLearningsPage />} />
           <Route path="/my-mentees" element={<MyMenteesPage />} />
           <Route path="/til-dashboard" element={<TILDashboardPage />} />

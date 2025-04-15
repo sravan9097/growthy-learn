@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Brain, Target, ArrowRight } from "lucide-react";
+import { DevelopingExpertiseCircle } from "@/components/home/DevelopingExpertiseCircle";
+
 
 export default function HomePage() {
   const recentTils = [
@@ -38,29 +40,32 @@ export default function HomePage() {
         <section >
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-semibold mb-2">Welcome to Growthy</h1>
-              <p className="text-muted-foreground">Track your learning journey and share knowledge with your team</p>
+              <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+              {/* <p className="text-muted-foreground">Track your learning journey and share knowledge with your team</p> */}
+              <DevelopingExpertiseCircle/> 
             </div>
-            <Link to="/reflect">
-              <Button className="gap-2">
-                Reflect Now
-              </Button>
-            </Link>
+            
+           
           </div>
 
           <Card className="p-6 bg-primary/5 border-none">
             <div className="flex items-start gap-4">
-              <Target className="h-6 w-6 text-primary mt-1" />
-              <div>
-                <h2 className="text-lg font-medium mb-2">Weekly Goal Progress</h2>
-                <p className="text-sm text-muted-foreground mb-4">
+              <img src="/GoalIcon-C4DCxICU.svg" className="w-8 h-8"></img>
+              <div className=" w-full">
+                <h2 className="text-lg font-medium mb-2">100% user participation in writing TILs, with every user writing at least 3 TILs a week.</h2>
+                {/* <p className="text-sm text-muted-foreground mb-4">
                   Share at least 3 TILs this week to meet your learning goals
-                </p>
+                </p> */}
                 <div className="h-2 bg-primary/10 rounded-full w-full">
                   <div className="h-2 bg-primary rounded-full" style={{ width: '33%' }} />
                 </div>
                 <p className="text-sm mt-2">1 of 3 TILs completed this week</p>
               </div>
+              <Link to="/reflect">
+              <Button className="gap-2">
+                Reflect Now
+              </Button>
+            </Link>
             </div>
           </Card>
         </section>

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Home, BookOpen, Video, Users, BrainCircuit, LogOut } from "lucide-react";
+import { Home, BookOpen, Video, Users, User, LogOut } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +25,7 @@ const NavItem = ({
           isActive ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground"
         )}
       >
-        <Icon className={cn("h-5 w-5", isActive ? "text-primary" : "text-muted-foreground")} />
+        <Icon className={cn("h-6 w-6 ", isActive ? "text-primary" : "text-muted-foreground ")} />
         {label}
       </Button>
     </Link>
@@ -41,7 +41,7 @@ export function Sidebar() {
     { icon: BookOpen, label: "Course Learn", path: "/courses" },
     { icon: Video, label: "My Learnings", path: "/my-learnings" },
     { icon: Users, label: "My Mentees", path: "/my-mentees" },
-    { icon: BrainCircuit, label: "Growth Journey", path: "/growth-journey" },
+    { icon: User, label: "Growth Journey", path: "/growth-journey" },
   ];
 
   return (

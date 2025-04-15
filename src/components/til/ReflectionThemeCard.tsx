@@ -32,8 +32,8 @@ export function ReflectionThemeCard({
   return (
     <Card 
       className={cn(
-        "cursor-pointer transition-all hover:shadow-md border-2",
-        selected ? "border-primary" : "hover:border-growthy-neutral-300"
+        " transition-all border",
+        selected ? "border-primary" : ""
       )}
       onClick={onClick}
     >
@@ -95,7 +95,7 @@ export function ReflectionThemeSelector({
           title={theme.title}
           description={theme.description}
           selected={selectedTheme === theme.type}
-          onClick={() => onSelectTheme(theme.type)}
+          //onClick={() => onSelectTheme(theme.type)}
         />
       ))}
     </div>

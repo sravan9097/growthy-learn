@@ -51,7 +51,7 @@ export default function MyLearningsPage() {
                     <Progress value={course.progress} className="h-2" />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                     <div className="bg-growthy-green-100 p-4 rounded-lg">
                       <h3 className="font-medium text-growthy-green-600 mb-2">Learn</h3>
                       <p className="text-sm text-growthy-neutral-500">Complete modules and hands-on activities</p>
@@ -64,7 +64,7 @@ export default function MyLearningsPage() {
                       <h3 className="font-medium text-growthy-neutral-600 mb-2">Evaluate</h3>
                       <p className="text-sm text-growthy-neutral-500">Get feedback on your learning depth</p>
                     </div>
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
             ))}

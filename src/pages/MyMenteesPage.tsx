@@ -54,7 +54,7 @@ export default function MyMenteesPage() {
                     </Avatar>
                     <div>
                       <CardTitle className="text-lg">{mentee.name}</CardTitle>
-                      <CardDescription>{mentee.role}</CardDescription>
+                      {/* <CardDescription>{mentee.role}</CardDescription> */}
                     </div>
                   </div>
                   <div className="text-right">
@@ -64,46 +64,22 @@ export default function MyMenteesPage() {
                 </div>
               </CardHeader>
               
-              <CardContent>
-                <div className="mb-4">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm text-growthy-neutral-500">Growth Progress</span>
+              <div className="p-4 flex flex-row g-3 justify-center" >
+                <div className="mb-4 mr-8 w-full">
+                  <div className="flex flex-row justify-between mb-1">
+                    <span className="text-sm text-growthy-neutral-500">Course Progress</span>
                     <span className="text-sm font-medium">{mentee.progress}%</span>
                   </div>
                   <Progress value={mentee.progress} className="h-2" />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="bg-growthy-neutral-100 p-4 rounded-lg">
-                    <div className="flex justify-between">
-                      <div>
-                        <h3 className="font-medium text-growthy-neutral-600">TILs Written</h3>
-                        <p className="text-2xl font-semibold mt-1">{mentee.tilCount}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-growthy-neutral-100 p-4 rounded-lg">
-                    <div className="flex justify-between">
-                      <div>
-                        <h3 className="font-medium text-growthy-neutral-600">Courses Taken</h3>
-                        <p className="text-2xl font-semibold mt-1">{mentee.courseCount}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1">
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    Send Message
-                  </Button>
-                  <Button variant="outline" className="flex-1">
+              
+                  <Button variant="outline" >
                     <BarChart2 className="mr-2 h-4 w-4" />
-                    View Progress
+                    View Course Progress
                   </Button>
-                </div>
-              </CardContent>
+                
+              </div>
             </Card>
           ))}
         </div>

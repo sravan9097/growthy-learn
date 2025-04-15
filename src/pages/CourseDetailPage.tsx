@@ -6,6 +6,7 @@ import { ArrowLeft, Book, CheckCircle, Circle, Clock, Lock } from "lucide-react"
 import { Link, useParams } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 
+
 export default function CourseDetailPage() {
   const { id } = useParams();
   
