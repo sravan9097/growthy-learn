@@ -36,6 +36,10 @@ export default {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
@@ -61,7 +65,31 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                growthy: {
+                    green: {
+                        100: '#E7F8E9',
+                        200: '#C5ECC9',
+                        300: '#89D68F',
+                        400: '#4CAF50',
+                        500: '#29873D',
+                        600: '#1E6E2F',
+                    },
+                    red: {
+                        100: '#FFECEC',
+                        200: '#FFC8C8',
+                        300: '#FF8A8A',
+                        400: '#FF5252',
+                        500: '#EA384C',
+                    },
+                    neutral: {
+                        100: '#F6F6F7',
+                        200: '#EAEAEB',
+                        300: '#C8C8C9',
+                        400: '#8A898C',
+                        500: '#555555',
+                    }
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
