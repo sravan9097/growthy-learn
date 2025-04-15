@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { TILReactionBar } from "./TILCard";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
 interface TILDrawerProps {
   isOpen: boolean;
@@ -39,7 +40,56 @@ interface TILDrawerProps {
 }
 
 export function TILDrawer({ isOpen, onClose, til }: TILDrawerProps) {
+  const [newComment, setNewComment] = useState("");
+  const [localReactions, setLocalReactions] = useState(til.reactions);
+  
   if (!isOpen) return null;
+
+  const handlePostComment = () => {
+    if (!newComment.trim()) {
+      toast({
+        title: "Empty comment",
+        description: "Please enter a comment before posting.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // In a real app, this would send the comment to an API
+    toast({
+      title: "Comment posted",
+      description: "Your comment has been added to the discussion.",
+    });
+    
+    // Clear the input
+    setNewComment("");
+    
+    // Update comment count
+    setLocalReactions({
+      ...localReactions,
+      comments: localReactions.comments + 1
+    });
+  };
+  
+  const handleReaction = (type: string) => {
+    // In a real app, this would send the reaction to an API
+    const reactions = { ...localReactions };
+    
+    if (type === 'thumbsUp') {
+      reactions.thumbsUp += 1;
+    } else if (type === 'insights') {
+      reactions.insights += 1;
+    } else if (type === 'confused') {
+      reactions.confused += 1;
+    }
+    
+    setLocalReactions(reactions);
+    
+    toast({
+      title: "Reaction added",
+      description: "Your reaction has been recorded.",
+    });
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-end">
@@ -68,7 +118,7 @@ export function TILDrawer({ isOpen, onClose, til }: TILDrawerProps) {
             <p>{til.content}</p>
           </div>
 
-          <TILReactionBar reactions={til.reactions} />
+          <TILReactionBar reactions={localReactions} onReact={handleReaction} />
 
           <Separator className="my-4" />
 
@@ -98,8 +148,10 @@ export function TILDrawer({ isOpen, onClose, til }: TILDrawerProps) {
             placeholder="Add a comment..." 
             className="resize-none mb-2" 
             rows={2}
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
           />
-          <Button>Post Comment</Button>
+          <Button onClick={handlePostComment}>Post Comment</Button>
         </div>
       </div>
     </div>
