@@ -26,7 +26,7 @@ export default function GrowthJourneyPage() {
 
   return (
     <Layout>
-      <div className="max-w-4xl w-full self-center mx-auto">
+      <div className="max-w-5xl w-full self-center mx-auto">
         <div className="mb-6">
           <Link to="/">
             <Button variant="ghost" className="pl-0">

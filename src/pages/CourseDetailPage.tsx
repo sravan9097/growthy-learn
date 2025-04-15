@@ -79,7 +79,7 @@ export default function CourseDetailPage() {
 
   return (
     <Layout>
-      <div>
+      <div className="max-w-5xl w-full self-center">
         <div className="mb-6">
           <Link to="/courses">
             <Button variant="ghost" className="pl-0">

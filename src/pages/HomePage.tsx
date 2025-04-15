@@ -35,7 +35,7 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className="max-w-4xl self-center w-full">
+      <div className="max-w-5xl self-center w-full">
         <section>
           <div className="flex items-center justify-between mb-8">
             <div>
