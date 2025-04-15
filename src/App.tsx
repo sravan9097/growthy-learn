@@ -1,10 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import SignInPage from "./pages/SignInPage";
 import CoursesPage from "./pages/CoursesPage";
 import MyLearningsPage from "./pages/MyLearningsPage";
 import MyMenteesPage from "./pages/MyMenteesPage";
@@ -13,9 +13,6 @@ import ReflectPage from "./pages/ReflectPage";
 import GrowthJourneyPage from "./pages/GrowthJourneyPage";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import NotFound from "./pages/NotFound";
-
-
-
 
 const queryClient = new QueryClient();
 
@@ -26,6 +23,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/course/:id" element={<CourseDetailPage />} />

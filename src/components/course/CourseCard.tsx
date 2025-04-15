@@ -5,23 +5,25 @@ import { Button } from "@/components/ui/button";
 import { Book, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
+
 interface CourseCardProps {
   id: number;
   title: string;
   status?: "not-started" | "in-progress" | "completed";
-  onClick?: () => void ;
+  onClick?: () => void;
 }
 
-export function CourseCard({ id , title, status = "not-started", onClick }: CourseCardProps) {
+export function CourseCard({ id, title, status = "not-started", onClick }: CourseCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleClick = () => {
     if (onClick) {
       onClick();
-    } else {
-      // Default navigation logic
-      navigate(`/course/${id}`); // You can use an ID or slug instead of title if preferred
     }
+    // Navigate to course detail page
+    navigate(`/course/${id}`);
   };
 
   return (
