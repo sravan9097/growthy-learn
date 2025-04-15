@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -7,45 +7,41 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Brain, Target, ArrowRight } from "lucide-react";
 import { DevelopingExpertiseCircle } from "@/components/home/DevelopingExpertiseCircle";
-
+import { TILDrawer } from "@/components/til/TILDrawer";
+import { sampleTILsByDate } from "@/components/til/DateGroupTILs";
 
 export default function HomePage() {
-  const recentTils = [
-    {
-      id: 1,
-      title: "Understanding Docker Layer Caching",
-      author: "Sarah Chen",
-      timeAgo: "2 hours ago",
-      theme: "Tech Concept"
-    },
-    {
-      id: 2,
-      title: "Effective Code Review Practices",
-      author: "Michael Ross",
-      timeAgo: "4 hours ago",
-      theme: "Observation"
-    },
-    {
-      id: 3,
-      title: "Managing State in React Applications",
-      author: "Emma Wilson",
-      timeAgo: "5 hours ago",
-      theme: "Tech Concept"
-    }
-  ];
+  const [selectedTIL, setSelectedTIL] = useState<any>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Flatten all TILs for the recent section
+  const allTils = sampleTILsByDate.flatMap(group => group.tils);
+  
+  // Get the most recent 6 TILs (3 for today, 3 for yesterday)
+  const recentTils = allTils.slice(0, 6);
+  
+  // Group TILs by "Today" and "Yesterday"
+  const todayTils = recentTils.slice(0, 3);
+  const yesterdayTils = recentTils.slice(3, 6);
+
+  const handleTILClick = (til: any) => {
+    setSelectedTIL(til);
+    setIsDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
 
   return (
     <Layout>
       <div className="max-w-4xl self-center w-full">
-        <section >
+        <section>
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
-              {/* <p className="text-muted-foreground">Track your learning journey and share knowledge with your team</p> */}
               <DevelopingExpertiseCircle/> 
             </div>
-            
-           
           </div>
 
           <Card className="p-6 bg-primary/5 border-none">
@@ -53,9 +49,6 @@ export default function HomePage() {
               <img src="/GoalIcon-C4DCxICU.svg" className="w-8 h-8"></img>
               <div className=" w-full">
                 <h2 className="text-lg font-medium mb-2">100% user participation in writing TILs, with every user writing at least 3 TILs a week.</h2>
-                {/* <p className="text-sm text-muted-foreground mb-4">
-                  Share at least 3 TILs this week to meet your learning goals
-                </p> */}
                 <div className="h-2 bg-primary/10 rounded-full w-full">
                   <div className="h-2 bg-primary rounded-full" style={{ width: '33%' }} />
                 </div>
@@ -70,41 +63,58 @@ export default function HomePage() {
           </Card>
         </section>
 
-        <section >
+        <section>
           <div className="flex items-center justify-between my-6">
             <h2 className="text-xl font-semibold">Recent TILs</h2>
-            <Button variant="ghost" className="gap-2">
-              View All <ArrowRight className="h-4 w-4" />
-            </Button>
+            <Link to="/til-dashboard">
+              <Button variant="ghost" className="gap-2">
+                View All <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
 
           <div className="space-y-4">
-          <h3 className="text-lg font-normal">Today</h3>
-            {recentTils.map((til) => (
-              <Card key={til.id} className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer">
+            <h3 className="text-lg font-normal">Today</h3>
+            {todayTils.map((til) => (
+              <Card 
+                key={til.id} 
+                className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer"
+                onClick={() => handleTILClick(til)}
+              >
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-normal">{til.title}</h3>
                   </div>
-                  
                 </div>
               </Card>
             ))}
           </div>
+          
           <div className="space-y-4 mt-6">
-          <h3 className="text-lg font-normal">Yesterday</h3>
-            {recentTils.map((til) => (
-              <Card key={til.id} className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer">
+            <h3 className="text-lg font-normal">Yesterday</h3>
+            {yesterdayTils.map((til) => (
+              <Card 
+                key={til.id} 
+                className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer"
+                onClick={() => handleTILClick(til)}
+              >
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-normal">{til.title}</h3>
                   </div>
-                  
                 </div>
               </Card>
             ))}
           </div>
         </section>
+
+        {selectedTIL && (
+          <TILDrawer
+            isOpen={isDrawerOpen}
+            onClose={closeDrawer}
+            til={selectedTIL}
+          />
+        )}
       </div>
     </Layout>
   );

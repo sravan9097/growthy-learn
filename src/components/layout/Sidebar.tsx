@@ -2,8 +2,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Home, BookOpen, Video, Users, User, LogOut } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const NavItem = ({ 
   icon: Icon, 
@@ -34,6 +35,8 @@ const NavItem = ({
 
 export function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const currentPath = location.pathname;
 
   const navItems = [
@@ -43,6 +46,14 @@ export function Sidebar() {
     { icon: Users, label: "My Mentees", path: "/my-mentees" },
     { icon: User, label: "Growth Journey", path: "/growth-journey" },
   ];
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    navigate("/sign-in");
+  };
 
   return (
     <div className="flex h-screen w-60 flex-col border-r bg-card">
@@ -61,12 +72,14 @@ export function Sidebar() {
       </div>
 
       <div className="p-4 border-t">
-        <Link to="/logout">
-          <Button variant="ghost" className="w-full justify-start gap-3 px-3 font-normal text-muted-foreground">
-            <LogOut className="h-5 w-5" />
-            Logout
-          </Button>
-        </Link>
+        <Button 
+          variant="ghost" 
+          className="w-full justify-start gap-3 px-3 font-normal text-muted-foreground"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-5 w-5" />
+          Logout
+        </Button>
       </div>
     </div>
   );
