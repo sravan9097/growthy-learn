@@ -2,7 +2,7 @@
 import React from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Book, CheckCircle, Circle, Clock, LockClosed } from "lucide-react";
+import { ArrowLeft, Book, CheckCircle, Circle, Clock, Lock } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 
@@ -72,7 +72,7 @@ export default function CourseDetailPage() {
         return <Circle className="h-5 w-5 text-primary fill-primary/30" />;
       case "locked":
       default:
-        return <LockClosed className="h-5 w-5 text-growthy-neutral-400" />;
+        return <Lock className="h-5 w-5 text-growthy-neutral-400" />;
     }
   };
 
