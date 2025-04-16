@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,29 +22,31 @@ import AllOnePagersPage from "./pages/AllOnePagersPage";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          <Route path="/course/:id" element={<CourseDetailPage />} />
-          <Route path="/my-learnings" element={<MyLearningsPage />} />
-          <Route path="/my-mentees" element={<MyMenteesPage />} />
-          <Route path="/til-dashboard" element={<TILDashboardPage />} />
-          <Route path="/reflect" element={<ReflectPage />} />
-          <Route path="/growth-journey" element={<GrowthJourneyPage />} />
-          <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
-          <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
-          <Route path="/all-one-pagers" element={<AllOnePagersPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/course/:id" element={<CourseDetailPage />} />
+            <Route path="/my-learnings" element={<MyLearningsPage />} />
+            <Route path="/my-mentees" element={<MyMenteesPage />} />
+            <Route path="/til-dashboard" element={<TILDashboardPage />} />
+            <Route path="/reflect" element={<ReflectPage />} />
+            <Route path="/growth-journey" element={<GrowthJourneyPage />} />
+            <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
+            <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
+            <Route path="/all-one-pagers" element={<AllOnePagersPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
       </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
