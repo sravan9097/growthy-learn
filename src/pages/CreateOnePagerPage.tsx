@@ -4,8 +4,10 @@ import { Layout } from "@/components/layout/Layout";
 import { OnePagerSidebar } from "@/components/onepager/OnePagerSidebar";
 import { StepContent } from "@/components/onepager/StepContent";
 import { OnePagerPreview } from "@/components/onepager/OnePagerPreview";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export default function CreateOnePagerPage() {
   const navigate = useNavigate();
@@ -90,7 +92,15 @@ export default function CreateOnePagerPage() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto w-full">
-        <h1 className="text-2xl font-semibold mb-6">Create One-Pager</h1>
+        <div className="mb-6 flex items-center justify-between">
+          <Link to="/">
+            <Button variant="ghost" className="pl-0">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
+          <h1 className="text-2xl font-semibold">Create One-Pager</h1>
+        </div>
         
         <div className="flex gap-8">
           <div className="w-1/3">
@@ -99,6 +109,7 @@ export default function CreateOnePagerPage() {
               activeStep={activeStep}
               completedSteps={completedSteps}
               onStepChange={handleStepChange}
+              content={content}
             />
           </div>
           

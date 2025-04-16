@@ -16,6 +16,7 @@ import CourseDetailPage from "./pages/CourseDetailPage";
 import NotFound from "./pages/NotFound";
 import CreateOnePagerPage from "./pages/CreateOnePagerPage";
 import OnePagerDetailPage from "./pages/OnePagerDetailPage";
+import AllOnePagersPage from "./pages/AllOnePagersPage";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/growth-journey" element={<GrowthJourneyPage />} />
           <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
           <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
+          <Route path="/all-one-pagers" element={<AllOnePagersPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
