@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,8 @@ import ReflectPage from "./pages/ReflectPage";
 import GrowthJourneyPage from "./pages/GrowthJourneyPage";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import NotFound from "./pages/NotFound";
+import CreateOnePagerPage from "./pages/CreateOnePagerPage";
+import OnePagerDetailPage from "./pages/OnePagerDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +35,8 @@ const App = () => (
           <Route path="/til-dashboard" element={<TILDashboardPage />} />
           <Route path="/reflect" element={<ReflectPage />} />
           <Route path="/growth-journey" element={<GrowthJourneyPage />} />
+          <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
+          <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

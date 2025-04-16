@@ -6,9 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { ReflectionThemeSelector } from "@/components/til/ReflectionThemeCard";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ReflectPage() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [reflection, setReflection] = useState("");
@@ -20,8 +23,13 @@ export default function ReflectPage() {
       title,
       reflection
     });
-    // In a real app, we would submit this to an API
-    // Then navigate back to home or show a success message
+    
+    toast({
+      title: "Reflection Submitted",
+      description: "Your TIL has been successfully saved.",
+    });
+    
+    navigate("/");
   };
 
   return (
@@ -48,7 +56,7 @@ export default function ReflectPage() {
           </div>
 
           <div className="space-y-4 mb-6">
-            {/* <div>
+            <div>
               <label htmlFor="title" className="block mb-2 font-medium">
                 Title
               </label>
@@ -59,7 +67,7 @@ export default function ReflectPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-            </div> */}
+            </div>
 
             <div>
               <label htmlFor="reflection" className="block text-lg mb-2 font-regular">
@@ -78,7 +86,7 @@ export default function ReflectPage() {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit"  >
+            <Button type="submit">
               Submit Reflection
             </Button>
           </div>
