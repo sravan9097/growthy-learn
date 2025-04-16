@@ -57,6 +57,36 @@ export default function HomePage() {
       likes: 15,
       comments: 3,
       previewText: "The Web Authentication API provides a more secure way to handle user authentication using public-key cryptography instead of passwords."
+    },
+    {
+      id: "4",
+      title: "Understanding Chrome Extension Manifest: Permissions, Scripts, and Web Interactions",
+      author: { name: "Sarah Chen", avatar: "" },
+      date: "Apr 16, 2025",
+      readTime: "5 min read",
+      likes: 24,
+      comments: 8,
+      previewText: "Chrome extensions often need deep interaction with web pages, but misconfigured or overly broad permissions can lead to security risks or limited functionality."
+    },
+    {
+      id: "5",
+      title: "Optimizing React Performance: When and How to Use Memoization",
+      author: { name: "John Doe", avatar: "" },
+      date: "Apr 15, 2025",
+      readTime: "7 min read",
+      likes: 18,
+      comments: 5,
+      previewText: "Understanding when to use React.memo, useMemo, and useCallback to avoid unnecessary re-renders and optimize application performance."
+    },
+    {
+      id: "6",
+      title: "An Introduction to Web Authentication API",
+      author: { name: "Emma Wilson", avatar: "" },
+      date: "Apr 14, 2025",
+      readTime: "6 min read",
+      likes: 15,
+      comments: 3,
+      previewText: "The Web Authentication API provides a more secure way to handle user authentication using public-key cryptography instead of passwords."
     }
   ];
 
@@ -75,7 +105,21 @@ export default function HomePage() {
         <section>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+              <div className="flex flex-row justify-between place-items-center mb-6">
+              <h1 className="text-2xl font-semibold ">Dashboard</h1>
+              <div className="flex flex-row items-end gap-3">
+                <Link to="/reflect">
+                  <Button className="gap-2 ">
+                    Reflect Now
+                  </Button>
+                </Link>
+                <Link to="/create-one-pager">
+                  <Button variant="outline" className="gap-2">
+                    Create One-Pager
+                  </Button>
+                </Link>
+              </div>
+              </div>
               <DevelopingExpertiseCircle/> 
             </div>
           </div>
@@ -90,19 +134,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-sm mt-2">1 of 3 TILs completed this week</p>
               </div>
-              <div className="flex gap-3">
-                <Link to="/reflect">
-                  <Button className="gap-2">
-                    Reflect Now
-                  </Button>
-                </Link>
-                <Link to="/create-one-pager">
-                  <Button variant="outline" className="gap-2">
-                    <FilePlus className="h-4 w-4" />
-                    Create One-Pager
-                  </Button>
-                </Link>
-              </div>
+              
             </div>
           </Card>
         </section>
