@@ -142,7 +142,7 @@ export default function CreateOnePagerPage() {
         <div className="flex gap-8">
           <div className="w-1/3 bg-card p-4 rounded-lg border">
             <OnePagerSidebar
-              activeStep={activeStep}
+              activeStepId={activeStep}
               completedSteps={completedSteps}
               inProgressStep={inProgressStep}
               onStepChange={handleStepChange}

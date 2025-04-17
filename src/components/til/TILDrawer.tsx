@@ -14,6 +14,7 @@ interface TILDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   til: {
+    id?: string; // Make id optional to fix the TypeScript error
     title: string;
     content: string;
     author: {
