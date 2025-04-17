@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { OnePagerSidebar } from "@/components/onepager/OnePagerSidebar";
 import { StepContent } from "@/components/onepager/StepContent";
@@ -14,8 +14,38 @@ export default function CreateOnePagerPage() {
   const { toast } = useToast();
   const [activeStep, setActiveStep] = useState("inputs");
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
+  const [inProgressStep, setInProgressStep] = useState<string>("inputs");
   const [content, setContent] = useState<Record<string, string>>({});
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  // Define step ordering for navigation
+  const stepOrder = ["inputs", "how-it-works", "use-cases", "problem-statement", "conclusion", "title"];
+  
+  // Find the next step based on current active step
+  const getNextStep = (currentStep: string): string | undefined => {
+    const currentIndex = stepOrder.indexOf(currentStep);
+    if (currentIndex < stepOrder.length - 1) {
+      return stepOrder[currentIndex + 1];
+    }
+    return undefined;
+  };
+
+  // Get the next step name for the button text
+  const getNextStepName = (currentStep: string): string | undefined => {
+    const nextStep = getNextStep(currentStep);
+    if (!nextStep) return undefined;
+    
+    const stepNames: Record<string, string> = {
+      "inputs": "One-Pager Inputs",
+      "how-it-works": "How it Works?",
+      "use-cases": "Use-Cases",
+      "problem-statement": "Problem Statement",
+      "conclusion": "Conclusion",
+      "title": "Title"
+    };
+    
+    return stepNames[nextStep];
+  };
 
   // Placeholder for generated content based on user inputs
   const getGeneratedContent = (step: string) => {
@@ -39,10 +69,18 @@ export default function CreateOnePagerPage() {
 
   const handleStepChange = (step: string) => {
     setActiveStep(step);
+    if (!completedSteps.includes(step) && !inProgressStep) {
+      setInProgressStep(step);
+    }
   };
 
   const handleContentChange = (id: string, value: string) => {
     setContent(prev => ({ ...prev, [id]: value }));
+    
+    // Mark the step as in progress when content is added
+    if (!completedSteps.includes(id) && inProgressStep !== id) {
+      setInProgressStep(id);
+    }
   };
 
   const handleConfirm = () => {
@@ -51,11 +89,10 @@ export default function CreateOnePagerPage() {
     }
     
     // Find the next step that hasn't been completed
-    const steps = ["inputs", "how-it-works", "use-cases", "problem-statement", "conclusion", "title"];
-    const currentIndex = steps.indexOf(activeStep);
-    
-    if (currentIndex < steps.length - 1) {
-      setActiveStep(steps[currentIndex + 1]);
+    const nextStep = getNextStep(activeStep);
+    if (nextStep) {
+      setActiveStep(nextStep);
+      setInProgressStep(nextStep);
     } else {
       // If all steps are completed, show preview
       setIsPreviewOpen(true);
@@ -63,7 +100,7 @@ export default function CreateOnePagerPage() {
   };
 
   const handlePreview = () => {
-    if (!completedSteps.includes(activeStep)) {
+    if (!completedSteps.includes(activeStep) && content[activeStep]) {
       setCompletedSteps(prev => [...prev, activeStep]);
     }
     setIsPreviewOpen(true);
@@ -82,7 +119,7 @@ export default function CreateOnePagerPage() {
       title: "Draft Saved",
       description: "Your one-pager draft has been saved.",
     });
-    navigate("/");
+    // We don't navigate away here to allow continued editing
   };
 
   const handleUseGenerated = (generatedContent: string) => {
@@ -92,7 +129,7 @@ export default function CreateOnePagerPage() {
   return (
     <Layout>
       <div className="max-w-5xl mx-auto w-full">
-        <div className="mb-8 flex flex-col items-start justify-between">
+        <div className="mb-6 flex flex-col items-start justify-between">
           <Link to="/">
             <Button variant="ghost" className="pl-0">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -103,23 +140,25 @@ export default function CreateOnePagerPage() {
         </div>
         
         <div className="flex gap-8">
-          <div className="w-1/3">
-            <h2 className="text-lg font-medium mb-4">Step-by-Step Flow</h2>
+          <div className="w-1/3 bg-card p-4 rounded-lg border">
             <OnePagerSidebar
               activeStep={activeStep}
               completedSteps={completedSteps}
+              inProgressStep={inProgressStep}
               onStepChange={handleStepChange}
               content={content}
             />
           </div>
           
-          <div className="w-2/3 border-l pl-8">
+          <div className="w-2/3 p-5 border rounded-lg shadow-sm">
             <StepContent
               step={activeStep}
+              nextStep={getNextStepName(activeStep)}
               content={content}
               onChange={handleContentChange}
               onConfirm={handleConfirm}
               onPreview={handlePreview}
+              onSaveDraft={handleSaveDraft}
               onUseGenerated={handleUseGenerated}
               generatedContent={getGeneratedContent(activeStep)}
             />

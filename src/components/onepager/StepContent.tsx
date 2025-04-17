@@ -1,28 +1,42 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Check, RefreshCw, X, Save } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface StepContentProps {
   step: string;
+  nextStep?: string;
   content: Record<string, string>;
   onChange: (id: string, value: string) => void;
   onConfirm: () => void;
   onPreview: () => void;
+  onSaveDraft?: () => void;
   onUseGenerated?: (content: string) => void;
   generatedContent?: string;
 }
 
 export function StepContent({
   step,
+  nextStep,
   content,
   onChange,
   onConfirm,
   onPreview,
+  onSaveDraft,
   onUseGenerated,
   generatedContent
 }: StepContentProps) {
+  const [showAIContent, setShowAIContent] = useState(true);
+  const [feedback, setFeedback] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+
   const getStepTitle = () => {
     switch (step) {
       case "inputs":
@@ -50,12 +64,71 @@ export function StepContent({
       case "use-cases":
       case "problem-statement":
       case "conclusion":
-        return "Growthy uses your 'How it Works' content and use-cases to generate a draft. Refine it with your feedback.";
+        return "Growthy uses your content to generate a draft. Review and refine it or create your own.";
       case "title":
-        return "Growthy uses your 'How it Works' content and use-cases to generate a draft. Refine it with your feedback.";
+        return "Create a compelling title for your one-pager that captures the essence of your content.";
       default:
         return "";
     }
+  };
+
+  const getNextButtonText = () => {
+    if (nextStep) {
+      return `Next: ${nextStep}`;
+    }
+    return "Confirm";
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setIsDirty(true);
+    onChange(step, e.target.value);
+    
+    // Simulate autosave
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaving(false);
+      setLastSaved(new Date());
+    }, 1000);
+  };
+
+  const handleAcceptAI = () => {
+    if (generatedContent) {
+      onUseGenerated && onUseGenerated(generatedContent);
+      setShowAIContent(false);
+      setIsDirty(true);
+      
+      // Simulate autosave
+      setIsSaving(true);
+      setTimeout(() => {
+        setIsSaving(false);
+        setLastSaved(new Date());
+      }, 1000);
+    }
+  };
+
+  const handleRegenerate = () => {
+    setIsRegenerating(true);
+    
+    // Simulate regeneration delay
+    setTimeout(() => {
+      setIsRegenerating(false);
+    }, 1500);
+  };
+
+  const handleDismissAI = () => {
+    setShowAIContent(false);
+  };
+
+  // Function to format the last saved time
+  const formatLastSaved = () => {
+    if (!lastSaved) return null;
+    
+    const now = new Date();
+    const diff = now.getTime() - lastSaved.getTime();
+    
+    if (diff < 60000) return "Saved just now";
+    if (diff < 3600000) return `Saved ${Math.floor(diff / 60000)} min ago`;
+    return `Saved ${Math.floor(diff / 3600000)} hours ago`;
   };
 
   const renderStepContent = () => {
@@ -70,7 +143,17 @@ export function StepContent({
               <Textarea
                 id="til"
                 value={content.til || ""}
-                onChange={(e) => onChange("til", e.target.value)}
+                onChange={(e) => {
+                  onChange("til", e.target.value);
+                  setIsDirty(true);
+                  
+                  // Simulate autosave
+                  setIsSaving(true);
+                  setTimeout(() => {
+                    setIsSaving(false);
+                    setLastSaved(new Date());
+                  }, 1000);
+                }}
                 className="min-h-[100px]"
               />
             </div>
@@ -81,7 +164,17 @@ export function StepContent({
               <Textarea
                 id="key-takeaway"
                 value={content.keyTakeaway || ""}
-                onChange={(e) => onChange("keyTakeaway", e.target.value)}
+                onChange={(e) => {
+                  onChange("keyTakeaway", e.target.value);
+                  setIsDirty(true);
+                  
+                  // Simulate autosave
+                  setIsSaving(true);
+                  setTimeout(() => {
+                    setIsSaving(false);
+                    setLastSaved(new Date());
+                  }, 1000);
+                }}
                 className="min-h-[100px]"
               />
             </div>
@@ -101,30 +194,73 @@ export function StepContent({
       case "conclusion":
         return (
           <div className="space-y-6">
-            {generatedContent && (
-              <div className="mb-4">
-                <Textarea
-                  value={generatedContent}
-                  readOnly
-                  className="min-h-[200px] bg-muted/20"
-                />
-                <Button 
-                  variant="secondary" 
-                  className="mt-2"
-                  onClick={() => onUseGenerated && onUseGenerated(generatedContent)}
-                >
-                  Use this
-                </Button>
-              </div>
+            {generatedContent && showAIContent && (
+              <Card className="p-4 bg-slate-50 border">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="text-sm font-medium text-muted-foreground">AI Suggested</div>
+                  <div className="flex gap-1">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 px-2 text-blue-600"
+                      onClick={handleAcceptAI}
+                    >
+                      <Check className="h-4 w-4 mr-1" />
+                      Accept & Edit
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-8 px-2"
+                      onClick={handleRegenerate}
+                      disabled={isRegenerating}
+                    >
+                      <RefreshCw className={cn("h-4 w-4 mr-1", isRegenerating && "animate-spin")} />
+                      {isRegenerating ? "Generating..." : "Regenerate"}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-8 px-2 text-gray-500"
+                      onClick={handleDismissAI}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="bg-white p-3 rounded-md border text-sm">
+                  {generatedContent}
+                </div>
+              </Card>
             )}
             <div>
-              <label htmlFor={step} className="block text-base font-medium mb-2">
-                Review the above content and give feedback to Growthy to improve it.
-              </label>
+              <div className="flex justify-between">
+                <label htmlFor={step} className="block text-base font-medium mb-2">
+                  Your Content
+                </label>
+                {(isSaving || lastSaved) && (
+                  <span className="text-xs text-muted-foreground">
+                    {isSaving ? "Saving..." : formatLastSaved()}
+                  </span>
+                )}
+              </div>
               <Textarea
                 id={step}
                 value={content[step] || ""}
-                onChange={(e) => onChange(step, e.target.value)}
+                onChange={handleContentChange}
+                placeholder="Write your content here..."
+                className="min-h-[200px]"
+              />
+            </div>
+            <div>
+              <label htmlFor="feedback" className="block text-base font-medium mb-2">
+                Help us improve this suggestion
+              </label>
+              <Textarea
+                id="feedback"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                placeholder="What did you like or what could be improved?"
                 className="min-h-[100px]"
               />
             </div>
@@ -133,30 +269,61 @@ export function StepContent({
       case "title":
         return (
           <div className="space-y-6">
-            {generatedContent && (
-              <div className="mb-4">
-                <Input
-                  value={generatedContent}
-                  readOnly
-                  className="bg-muted/20"
-                />
-                <Button 
-                  variant="secondary" 
-                  className="mt-2"
-                  onClick={() => onUseGenerated && onUseGenerated(generatedContent)}
-                >
-                  Use this
-                </Button>
-              </div>
+            {generatedContent && showAIContent && (
+              <Card className="p-4 bg-slate-50 border">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="text-sm font-medium text-muted-foreground">AI Suggested</div>
+                  <div className="flex gap-1">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 px-2 text-blue-600"
+                      onClick={handleAcceptAI}
+                    >
+                      <Check className="h-4 w-4 mr-1" />
+                      Accept & Edit
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-8 px-2"
+                      onClick={handleRegenerate}
+                      disabled={isRegenerating}
+                    >
+                      <RefreshCw className={cn("h-4 w-4 mr-1", isRegenerating && "animate-spin")} />
+                      {isRegenerating ? "Generating..." : "Regenerate"}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-8 px-2 text-gray-500"
+                      onClick={handleDismissAI}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="bg-white p-3 rounded-md border text-sm">
+                  {generatedContent}
+                </div>
+              </Card>
             )}
             <div>
-              <label htmlFor="title" className="block text-base font-medium mb-2">
-                Review the above content and give feedback to Growthy to improve it.
-              </label>
+              <div className="flex justify-between">
+                <label htmlFor="title" className="block text-base font-medium mb-2">
+                  Your Title
+                </label>
+                {(isSaving || lastSaved) && (
+                  <span className="text-xs text-muted-foreground">
+                    {isSaving ? "Saving..." : formatLastSaved()}
+                  </span>
+                )}
+              </div>
               <Input
                 id="title"
                 value={content.title || ""}
-                onChange={(e) => onChange("title", e.target.value)}
+                onChange={handleContentChange}
+                placeholder="Enter your title here..."
               />
             </div>
           </div>
@@ -173,13 +340,30 @@ export function StepContent({
       
       {renderStepContent()}
       
-      <div className="flex justify-end gap-4 mt-8">
-        <Button variant="default" onClick={onPreview}>
-          Preview
+      <div className="flex justify-between gap-4 mt-8">
+        <Button 
+          variant="outline" 
+          onClick={onSaveDraft}
+          className="gap-2"
+        >
+          <Save className="h-4 w-4" />
+          Save as Draft
         </Button>
-        <Button variant="default" onClick={onConfirm}>
-          Confirm
-        </Button>
+        <div className="flex gap-4">
+          <Button 
+            variant="outline" 
+            onClick={onPreview}
+          >
+            Preview
+          </Button>
+          <Button 
+            variant="default" 
+            onClick={onConfirm}
+            disabled={!isDirty && !content[step]}
+          >
+            {getNextButtonText()}
+          </Button>
+        </div>
       </div>
     </div>
   );
