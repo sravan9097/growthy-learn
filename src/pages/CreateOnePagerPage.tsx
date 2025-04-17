@@ -91,15 +91,15 @@ export default function CreateOnePagerPage() {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto w-full">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto w-full">
+        <div className="mb-8 flex flex-col items-start justify-between">
           <Link to="/">
             <Button variant="ghost" className="pl-0">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-2xl font-semibold">Create One-Pager</h1>
+          <h1 className="text-2xl font-semibold mt-3">Create One-Pager</h1>
         </div>
         
         <div className="flex gap-8">

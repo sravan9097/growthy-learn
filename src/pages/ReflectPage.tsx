@@ -56,7 +56,7 @@ export default function ReflectPage() {
           </div>
 
           <div className="space-y-4 mb-6">
-            <div>
+            {/* <div>
               <label htmlFor="title" className="block mb-2 font-medium">
                 Title
               </label>
@@ -67,7 +67,7 @@ export default function ReflectPage() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
-            </div>
+            </div> */}
 
             <div>
               <label htmlFor="reflection" className="block text-lg mb-2 font-regular">

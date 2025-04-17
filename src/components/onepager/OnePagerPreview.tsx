@@ -8,6 +8,7 @@ interface OnePagerPreviewProps {
   onClose: () => void;
   onPublish: () => void;
   onSaveDraft: () => void;
+  onPreview: () => void;
   content: Record<string, string>;
 }
 

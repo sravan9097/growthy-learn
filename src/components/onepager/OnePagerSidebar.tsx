@@ -3,6 +3,7 @@ import React from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 
 interface SidebarItemProps {
   title: string;
@@ -102,6 +103,14 @@ export function OnePagerSidebar({
           content={content[step.id] || ""}
         />
       ))}
+{/*       
+      <div className="flex justify-end gap-4 mt-8">
+        <Button variant="default">
+          Preview
+        </Button>
+        
+      </div> */}
     </div>
+    
   );
 }

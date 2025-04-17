@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export function Header({ userName = "Sarah Chen", userImage }: HeaderProps) {
   return (
-    <header className="w-full flex justify-between items-end px-6 py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="w-full sticky top-0 z-40 flex justify-between items-end px-6 py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="col-span-1 flex h-full justify-start items-center">
         <a className="flex" href="/"> 
         
