@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, Brain, FilePlus, Target } from "lucide-react";
+import { ArrowRight, Brain, FilePlus, Flame, Plus, Target } from "lucide-react";
 import { DevelopingExpertiseCircle } from "@/components/home/DevelopingExpertiseCircle";
 import { TILDrawer } from "@/components/til/TILDrawer";
 import { sampleTILsByDate } from "@/components/til/DateGroupTILs";
@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function HomePage() {
   const [selectedTIL, setSelectedTIL] = useState<any>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   // Flatten all TILs for the recent section
   const allTils = sampleTILsByDate.flatMap(group => group.tils);
@@ -90,8 +91,9 @@ export default function HomePage() {
     }
   ];
 
-  const handleTILClick = (til: any) => {
+  const handleTILClick = (til: any, date: string) => {
     setSelectedTIL(til);
+    setSelectedDate(date);
     setIsDrawerOpen(true);
   };
 
@@ -99,44 +101,50 @@ export default function HomePage() {
     setIsDrawerOpen(false);
   };
 
+  const getTilsForDate = (date: string) => {
+    const dateGroup = sampleTILsByDate.find(group => group.date.includes(date));
+    return dateGroup ? dateGroup.tils : [];
+  };
+
   return (
     <Layout>
       <div className="max-w-5xl self-center w-full">
         <section>
           <div className="flex items-center justify-between mb-8">
-            <div>
+            <div className="w-full">
               <div className="flex flex-row justify-between place-items-center mb-6">
-              <h1 className="text-2xl font-semibold ">Dashboard</h1>
-              <div className="flex flex-row items-end gap-3">
-                <Link to="/reflect">
-                  <Button className="gap-2 ">
-                    Reflect Now
-                  </Button>
-                </Link>
-                <Link to="/create-one-pager">
-                  <Button variant="outline" className="gap-2">
-                    Create One-Pager
-                  </Button>
-                </Link>
+                <h1 className="text-2xl font-semibold">Dashboard</h1>
+                <div className="flex flex-row items-end gap-3">
+                  <Link to="/reflect">
+                    <Button className="gap-2">
+                      <Flame className="h-4 w-4" /> Reflect Now
+                    </Button>
+                  </Link>
+                  <Link to="/create-one-pager">
+                    <Button variant="outline" className="gap-2">
+                      Create One-Pager
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              </div>
-              <DevelopingExpertiseCircle/> 
+              <DevelopingExpertiseCircle /> 
             </div>
           </div>
 
-          <Card className="p-6 bg-primary/5 border-none">
-            <div className="flex items-start gap-4">
-              <img src="/GoalIcon-C4DCxICU.svg" className="w-8 h-8"></img>
-              <div className="w-full">
-                <h2 className="text-lg font-medium mb-2">100% user participation in writing TILs, with every user writing at least 3 TILs a week.</h2>
-                <div className="h-2 bg-primary/10 rounded-full w-full">
-                  <div className="h-2 bg-primary rounded-full" style={{ width: '33%' }} />
+          <Link to="/til-dashboard">
+            <Card className="p-6 bg-primary/5 border-none hover:bg-primary/10 transition-colors cursor-pointer">
+              <div className="flex items-start gap-4">
+                <img src="/GoalIcon-C4DCxICU.svg" className="w-8 h-8" alt="Goal icon"></img>
+                <div className="w-full">
+                  <h2 className="text-lg font-medium mb-2">100% user participation in writing TILs, with every user writing at least 3 TILs a week.</h2>
+                  <div className="h-2 bg-primary/10 rounded-full w-full">
+                    <div className="h-2 bg-primary rounded-full" style={{ width: '33%' }} />
+                  </div>
+                  <p className="text-sm mt-2 font-medium text-primary">1 of 3 TILs completed this week</p>
                 </div>
-                <p className="text-sm mt-2">1 of 3 TILs completed this week</p>
               </div>
-              
-            </div>
-          </Card>
+            </Card>
+          </Link>
         </section>
 
         <section className="mt-10">
@@ -184,16 +192,29 @@ export default function HomePage() {
 
             <TabsContent value="tils" className="mt-0">
               <div className="space-y-4">
-                <h3 className="text-lg font-normal">Today</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-normal">Today</h3>
+                  <Link to="/reflect">
+                    <Button variant="ghost" size="sm" className="flex items-center gap-1">
+                      <Plus className="h-4 w-4" /> Add TIL
+                    </Button>
+                  </Link>
+                </div>
                 {todayTils.map((til) => (
                   <Card 
                     key={til.id} 
                     className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer"
-                    onClick={() => handleTILClick(til)}
+                    onClick={() => handleTILClick(til, "Today")}
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-normal">{til.title}</h3>
+                        {til.title ? (
+                          <h3 className="font-normal">{til.title}</h3>
+                        ) : (
+                          <h3 className="font-medium">
+                            {til.content.split('.')[0]}.
+                          </h3>
+                        )}
                       </div>
                     </div>
                   </Card>
@@ -201,16 +222,24 @@ export default function HomePage() {
               </div>
               
               <div className="space-y-4 mt-6">
-                <h3 className="text-lg font-normal">Yesterday</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-normal">Yesterday</h3>
+                </div>
                 {yesterdayTils.map((til) => (
                   <Card 
                     key={til.id} 
                     className="px-3 py-2 hover:bg-accent/5 transition-colors cursor-pointer"
-                    onClick={() => handleTILClick(til)}
+                    onClick={() => handleTILClick(til, "Yesterday")}
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-normal">{til.title}</h3>
+                        {til.title ? (
+                          <h3 className="font-normal">{til.title}</h3>
+                        ) : (
+                          <h3 className="font-medium">
+                            {til.content.split('.')[0]}.
+                          </h3>
+                        )}
                       </div>
                     </div>
                   </Card>
@@ -225,6 +254,7 @@ export default function HomePage() {
             isOpen={isDrawerOpen}
             onClose={closeDrawer}
             til={selectedTIL}
+            allTilsForDate={selectedDate ? getTilsForDate(selectedDate) : undefined}
           />
         )}
       </div>

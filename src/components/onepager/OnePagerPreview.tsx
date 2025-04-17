@@ -1,14 +1,21 @@
 
 import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface OnePagerPreviewProps {
+export interface OnePagerPreviewProps {
   isOpen: boolean;
   onClose: () => void;
   onPublish: () => void;
   onSaveDraft: () => void;
-  onPreview: () => void;
+  onPreview?: () => void; // Added this missing prop
   content: Record<string, string>;
 }
 
@@ -17,74 +24,74 @@ export function OnePagerPreview({
   onClose,
   onPublish,
   onSaveDraft,
+  onPreview,
   content,
 }: OnePagerPreviewProps) {
-  const formatDate = () => {
-    const now = new Date();
-    return now.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[700px] max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Publish One-Pager</DialogTitle>
+          <DialogTitle>Preview One-Pager</DialogTitle>
+          <DialogDescription>
+            Review your one-pager before publishing or saving as a draft.
+          </DialogDescription>
         </DialogHeader>
-        
-        <div className="mt-4">
-          <p className="text-sm text-muted-foreground mb-4">
-            Read the below one-pager, review, make modifications and finally Publish
-          </p>
-          
-          <div className="border rounded-lg p-6 overflow-y-auto max-h-[60vh]">
-            <h1 className="text-2xl font-bold mb-4">{content.title || "Understanding Chrome Extension Manifest"}</h1>
-            
-            <div className="text-sm text-muted-foreground mb-6">
-              {formatDate()}
-              <span className="ml-2">5 min read</span>
-            </div>
-            
-            <p className="mb-6">
-              {content["problem-statement"] || 
-                "Chrome extensions often need deep interaction with web pages, but misconfigured or overly broad permissions can lead to security risks or limited functionality. Understanding how manifest.json controls these interactions is crucial, especially for extensions like screen capture or content augmentation tools that operate across many sites."}
-            </p>
-            
-            <div className="h-96 bg-muted rounded-md mb-6"></div>
-            
-            <h2 className="text-xl font-medium mb-3">How does it work?</h2>
-            <p className="mb-4">
-              {content["how-it-works"] || 
-                "The manifest.json file is the backbone of any Chrome extension. It defines the extension's metadata, required permissions, and how it behaves in the browser."}
-            </p>
-            <p className="mb-6">
-              {"For tools like Awesome Screenshot & Screen Recorder, it enables interaction with all web pages using the host_permissions field (<all_urls>), which grants access across websites. Core permissions like tabs, activeTab, scripting, and desktopCapture allow capturing, recording, and modifying page content. The content_scripts section automatically injects scripts to enable DOM interactions like highlighting. The background service worker handles tasks like listening for capture events, while web_accessible_resources makes internal files accessible within page contexts. This configuration ensures smooth integration and functionality across any site, maintaining both flexibility and control."}
-            </p>
-            
-            <h2 className="text-xl font-medium mb-3">Use Cases</h2>
-            <p className="mb-6">
-              {content["use-cases"] || 
-                "1. Screen capturing tools use host_permissions to access and record content from any open tab or website.\n2. Content enhancement extensions inject scripts into web pages to add features like annotations or translations, based on permissions set in manifest.json."}
-            </p>
-            
-            <h2 className="text-xl font-medium mb-3">Conclusion</h2>
-            <p className="mb-6">
-              {content["conclusion"] || 
-                "A well-structured manifest.json ensures secure and effective page interaction. Developers should use specific permissions where possible and follow Chrome's latest extension guidelines to maintain user trust and platform compliance."}
-            </p>
+        <ScrollArea className="flex-1 max-h-[60vh] mt-4">
+          <div className="space-y-6">
+            {content.title && (
+              <div>
+                <h2 className="text-2xl font-bold">{content.title}</h2>
+              </div>
+            )}
+
+            {content.summary && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Summary</h3>
+                <p className="whitespace-pre-line">{content.summary}</p>
+              </div>
+            )}
+
+            {content.problem && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Problem</h3>
+                <p className="whitespace-pre-line">{content.problem}</p>
+              </div>
+            )}
+
+            {content.solution && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Solution</h3>
+                <p className="whitespace-pre-line">{content.solution}</p>
+              </div>
+            )}
+
+            {content.useCase && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Use Cases</h3>
+                <p className="whitespace-pre-line">{content.useCase}</p>
+              </div>
+            )}
+
+            {content.alternatives && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Alternatives Considered</h3>
+                <p className="whitespace-pre-line">{content.alternatives}</p>
+              </div>
+            )}
+
+            {content.references && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">References</h3>
+                <p className="whitespace-pre-line">{content.references}</p>
+              </div>
+            )}
           </div>
-          
-          <div className="flex justify-between mt-6">
-            <Button variant="outline" onClick={onSaveDraft}>
-              Save as Draft
-            </Button>
-            <Button onClick={onPublish}>
-              Publish
-            </Button>
-          </div>
+        </ScrollArea>
+        <div className="flex justify-end gap-2 mt-4">
+          <Button variant="outline" onClick={onSaveDraft}>
+            Save as Draft
+          </Button>
+          <Button onClick={onPublish}>Publish</Button>
         </div>
       </DialogContent>
     </Dialog>
