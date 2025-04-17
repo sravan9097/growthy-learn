@@ -252,9 +252,9 @@ export default function CourseDetailPage() {
                                 disabled={lesson.status === "locked"}
                               />
                             )}
-                            {module.status === "locked" || lesson.status === "locked" ? (
+                            {(module.status === "locked" || lesson.status === "locked") && (
                               <Lock className="h-4 w-4 text-growthy-neutral-400" />
-                            ) : null}
+                            )}
                             <span className={`${lesson.status === 'locked' ? 'text-growthy-neutral-400' : ''} ${lesson.isHandsOn ? 'font-medium' : ''}`}>
                               {lesson.title} {lesson.isHandsOn && <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded ml-2">Hands-On</span>}
                             </span>

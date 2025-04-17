@@ -72,23 +72,34 @@ const StepItem = ({
 };
 
 interface OnePagerSidebarProps {
-  steps: {
-    id: string;
-    title: string;
-    content: string;
-  }[];
   activeStepId: string;
-  onSelectStep: (id: string) => void;
   completedSteps: string[];
+  inProgressStep: string;
+  onStepChange: (step: string) => void;
+  content: Record<string, string>;
 }
 
 export function OnePagerSidebar({
-  steps,
   activeStepId,
-  onSelectStep,
-  completedSteps
+  completedSteps,
+  inProgressStep,
+  onStepChange,
+  content
 }: OnePagerSidebarProps) {
   const [expandedSteps, setExpandedSteps] = React.useState<Record<string, boolean>>({});
+
+  // Define the steps structure
+  const steps = [
+    { id: "inputs", title: "One-Pager Inputs" },
+    { id: "how-it-works", title: "How it Works?" },
+    { id: "use-cases", title: "Use-Cases" },
+    { id: "problem-statement", title: "Problem Statement" },
+    { id: "conclusion", title: "Conclusion" },
+    { id: "title", title: "Title" }
+  ].map(step => ({
+    ...step,
+    content: content[step.id] || ""
+  }));
 
   const toggleStepExpand = (stepId: string) => {
     setExpandedSteps(prev => ({
@@ -124,7 +135,7 @@ export function OnePagerSidebar({
               preview={step.content.substring(0, 100) + (step.content.length > 100 ? "..." : "")}
               isActive={activeStepId === step.id}
               isCompleted={completedSteps.includes(step.id)}
-              onClick={() => onSelectStep(step.id)}
+              onClick={() => onStepChange(step.id)}
               isExpanded={expandedSteps[step.id] || false}
               onToggleExpand={() => toggleStepExpand(step.id)}
             />
