@@ -1,7 +1,18 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Home, BookOpen, Video, Users, User, LogOut } from "lucide-react";
+import { 
+  Home, 
+  BookOpen, 
+  Video, 
+  Users, 
+  User, 
+  LogOut,
+  TrendingUp,
+  Award,
+  FileText,
+  Target 
+} from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -44,7 +55,7 @@ export function Sidebar() {
     { icon: BookOpen, label: "Course Learn", path: "/courses" },
     { icon: Video, label: "My Learnings", path: "/my-learnings" },
     { icon: Users, label: "My Mentees", path: "/my-mentees" },
-    { icon: User, label: "Growth Journey", path: "/growth-journey" },
+    { icon: TrendingUp, label: "Growth Journey", path: "/growth-journey" }
   ];
 
   const handleLogout = () => {
