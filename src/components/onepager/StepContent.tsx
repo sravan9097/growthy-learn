@@ -334,12 +334,13 @@ export function StepContent({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
+      
       <h2 className="text-xl font-medium mb-2">{getStepTitle()}</h2>
       <p className="text-muted-foreground mb-6">{getStepDescription()}</p>
       
       {renderStepContent()}
-      
+    
       <div className="flex justify-between gap-4 mt-8">
         <Button 
           variant="outline" 

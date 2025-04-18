@@ -10,8 +10,8 @@ export default function GrowthJourneyPage() {
     <Layout>
       <div className="max-w-5xl w-full self-center mx-auto">
         <GoalSummaryCard />
-        <MilestonesTimeline />
         <JourneyStats />
+        <MilestonesTimeline />
       </div>
     </Layout>
   );

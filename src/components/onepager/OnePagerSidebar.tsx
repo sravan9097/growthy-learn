@@ -117,9 +117,9 @@ export function OnePagerSidebar({
   }, [activeStepId]);
 
   return (
-    <div className="h-full border-r">
+    <div className="h-full ">
       <div className="p-4 border-b">
-        <h2 className="font-medium">Create One-Pager</h2>
+        <h2 className="font-medium">Creation of One-Pager</h2>
         <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
           <div className="h-2 bg-primary/40 rounded-full w-16"></div>
           <span>{completedSteps.length} of {steps.length} sections completed</span>

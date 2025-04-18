@@ -1,5 +1,5 @@
 
-import { Target, Check, X } from "lucide-react";
+import { ExternalLink, Check, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
@@ -7,15 +7,20 @@ export function GoalSummaryCard() {
   const progress = 75; // Example progress value
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-      <div className="flex items-start gap-4">
-        <div className="bg-primary/10 p-3 rounded-full">
-          <Target className="h-6 w-6 text-primary" />
-        </div>
+    <div className="bg-white rounded-lg p-6">
+      <div className="flex items-center justify-between mb-8">
+              <div className="flex flex-row justify-between place-items-center mb-2">
+                <h1 className="text-2xl font-semibold">Growth Journey</h1>
+              </div>
+      </div>
+      <h2 className="text-xl font-semibold mb-6">How are you impacting BC?</h2>
+      <div className="flex items-start gap-4 border border-gray-100 p-6 rounded-xl shadow">
+        
+        <img src="/GoalIcon-C4DCxICU.svg" className="w-10 h-10 "/>
         
         <div className="flex-1">
-          <h2 className="text-xl font-semibold mb-2">How are you impacting BC?</h2>
-          <p className="text-muted-foreground mb-4">Primary Goal: Posting TIL at least 3 times a week</p>
+          <h2 className="text-xl font-semibold mb-2">Posting TIL at least 3 times a week</h2>
+          <p className="text-muted-foreground mb-4"></p>
           
           <div className="flex gap-4 mb-4">
             <div className="flex items-center gap-2">
@@ -41,8 +46,9 @@ export function GoalSummaryCard() {
             <Progress value={progress} className="h-2" />
           </div>
           
-          <Button variant="outline" className="mt-2">
+          <Button variant="link" className="mt-1 px-0">
             See how others are making an impact
+            <ExternalLink className="w-4 h-4 text-primary"/>
           </Button>
         </div>
       </div>
