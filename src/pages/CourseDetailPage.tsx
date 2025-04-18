@@ -273,7 +273,7 @@ export default function CourseDetailPage() {
                         </div>
                         
                         {/* Hands-on activities block */}
-                        {lesson.isHandsOn && lesson.status !== "locked" && (
+                        {lesson.isHandsOn && (lesson.status === "in-progress" || lesson.status === "completed") && (
                           <div className="ml-8 mt-2 mb-4 p-3 bg-secondary/40 rounded-md space-y-3">
                             {lesson.instructions && (
                               <div>

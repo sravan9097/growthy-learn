@@ -11,7 +11,9 @@ import {
   ExternalLink,
   Check,
   FileText,
-  Info
+  Info,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -268,7 +270,7 @@ export default function ModulePage() {
         <div className="mb-4">
           <Breadcrumb>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to={`/course/${courseId}`}>
+              <BreadcrumbLink href={`/course/${courseId}`}>
                 <ArrowLeft className="h-4 w-4 mr-1 inline" />
                 Back to Course
               </BreadcrumbLink>
@@ -422,7 +424,7 @@ export default function ModulePage() {
                       )}
                       
                       {/* Notes upload area */}
-                      {task.requiresUpload && task.status !== "locked" && (
+                      {task.requiresUpload && (task.status === "in-progress" || task.status === "completed") && (
                         <div className="mb-4">
                           <h4 className="text-sm font-medium mb-2">Upload Notes</h4>
                           {uploadedImages[task.id] ? (
@@ -458,11 +460,10 @@ export default function ModulePage() {
                       
                       {/* Action buttons */}
                       <div className="flex justify-end gap-2 mt-2">
-                        {task.status !== "locked" && (
+                        {(task.status === "in-progress" || task.status === "completed") && (
                           <Button 
                             variant={task.status === "completed" ? "outline" : "default"}
                             onClick={() => markTaskComplete(task.id)}
-                            disabled={task.status === "locked"}
                           >
                             {task.status === "completed" ? (
                               <>
