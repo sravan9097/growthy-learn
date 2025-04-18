@@ -14,6 +14,7 @@ import TILDashboardPage from "./pages/TILDashboardPage";
 import ReflectPage from "./pages/ReflectPage";
 import GrowthJourneyPage from "./pages/GrowthJourneyPage";
 import CourseDetailPage from "./pages/CourseDetailPage";
+import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 import CreateOnePagerPage from "./pages/CreateOnePagerPage";
 import OnePagerDetailPage from "./pages/OnePagerDetailPage";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/course/:id" element={<CourseDetailPage />} />
+            <Route path="/module/:courseId/:moduleId" element={<ModulePage />} />
             <Route path="/my-learnings" element={<MyLearningsPage />} />
             <Route path="/my-mentees" element={<MyMenteesPage />} />
             <Route path="/til-dashboard" element={<TILDashboardPage />} />

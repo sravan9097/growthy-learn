@@ -14,14 +14,8 @@ import {
   Check,
   Github
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
@@ -47,6 +41,7 @@ interface Module {
 
 export default function CourseDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [expandedModules, setExpandedModules] = useState<string[]>([]);
   const [githubLink, setGithubLink] = useState("");
   
@@ -165,6 +160,11 @@ export default function CourseDetailPage() {
     const completedLessons = module.lessons.filter(l => l.status === "completed").length;
     return `${completedLessons} of ${module.lessons.length} tasks completed`;
   };
+  
+  // Navigate to module page
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/module/${course.id}/${moduleId}`);
+  };
 
   return (
     <Layout>
@@ -211,7 +211,14 @@ export default function CourseDetailPage() {
               <div key={module.id} className={`border rounded-lg ${module.status === 'locked' ? 'opacity-70' : ''}`}>
                 <div 
                   className={`p-4 border-b flex justify-between items-center cursor-pointer ${expandedModules.includes(module.id) ? 'border-b' : ''}`}
-                  onClick={() => toggleModule(module.id)}
+                  onClick={() => {
+                    // Only allow clicking on non-locked modules
+                    if (module.status !== "locked") {
+                      handleModuleClick(module.id);
+                    } else {
+                      toggleModule(module.id);
+                    }
+                  }}
                 >
                   <div className="flex items-center gap-3">
                     {module.status === "completed" && <CheckCircle className="h-5 w-5 text-growthy-green-500" />}
