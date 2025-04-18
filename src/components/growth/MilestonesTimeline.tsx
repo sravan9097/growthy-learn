@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Award, GraduationCap, FileText, Trophy } from "lucide-react";
+import { ChevronDown, ChevronUp, Award, GraduationCap, FileText, Trophy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 

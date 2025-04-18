@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 
-// Define types for better code organization
 interface Lesson {
   title: string;
   status: "completed" | "in-progress" | "locked";
@@ -45,7 +43,6 @@ export default function CourseDetailPage() {
   const [expandedModules, setExpandedModules] = useState<string[]>([]);
   const [githubLink, setGithubLink] = useState("");
   
-  // Course data (in a real app, this would be fetched based on the id)
   const course = {
     id: id || "1",
     title: "AI Fundamentals",
@@ -107,7 +104,6 @@ export default function CourseDetailPage() {
     ] as Module[]
   };
 
-  // Toggle module expansion
   const toggleModule = (moduleId: string) => {
     if (expandedModules.includes(moduleId)) {
       setExpandedModules(expandedModules.filter(id => id !== moduleId));
@@ -116,16 +112,13 @@ export default function CourseDetailPage() {
     }
   };
 
-  // Handle checkbox toggle for lesson completion
   const toggleLessonStatus = (moduleIndex: number, lessonIndex: number) => {
-    // In a real app, this would update the status in the backend
     toast({
       title: "Status updated",
       description: "Your progress has been saved."
     });
   };
 
-  // Handle GitHub link submission
   const handleGithubSubmit = (moduleId: string, lessonIndex: number) => {
     if (!githubLink) {
       toast({
@@ -136,7 +129,6 @@ export default function CourseDetailPage() {
       return;
     }
     
-    // Validate GitHub link format (basic validation)
     if (!githubLink.includes('github.com')) {
       toast({
         title: "Invalid GitHub link",
@@ -151,17 +143,14 @@ export default function CourseDetailPage() {
       description: "Your GitHub link has been submitted successfully."
     });
     
-    // Clear the input
     setGithubLink("");
   };
 
-  // Calculate module completion
   const getModuleCompletionText = (module: Module) => {
     const completedLessons = module.lessons.filter(l => l.status === "completed").length;
     return `${completedLessons} of ${module.lessons.length} tasks completed`;
   };
   
-  // Navigate to module page
   const handleModuleClick = (moduleId: string) => {
     navigate(`/module/${course.id}/${moduleId}`);
   };
@@ -212,7 +201,6 @@ export default function CourseDetailPage() {
                 <div 
                   className={`p-4 border-b flex justify-between items-center cursor-pointer ${expandedModules.includes(module.id) ? 'border-b' : ''}`}
                   onClick={() => {
-                    // Only allow clicking on non-locked modules
                     if (module.status !== "locked") {
                       handleModuleClick(module.id);
                     } else {
@@ -272,7 +260,6 @@ export default function CourseDetailPage() {
                           </div>
                         </div>
                         
-                        {/* Hands-on activities block */}
                         {lesson.isHandsOn && (lesson.status === "in-progress" || lesson.status === "completed") && (
                           <div className="ml-8 mt-2 mb-4 p-3 bg-secondary/40 rounded-md space-y-3">
                             {lesson.instructions && (

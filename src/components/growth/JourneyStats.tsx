@@ -1,5 +1,5 @@
 
-import { LineChart, BarChart, Target } from "lucide-react";
+import { LineChart, BarChart, Target, FileText, GraduationCap, Trophy } from "lucide-react";
 
 export function JourneyStats() {
   return (
