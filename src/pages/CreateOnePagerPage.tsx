@@ -87,7 +87,8 @@ export default function CreateOnePagerPage() {
   };
 
   const handleConfirm = () => {
-    if (!currentStepSaved) {
+    // Remove the validation check for the first step to allow proceeding
+    if (activeStep !== "inputs" && !currentStepSaved) {
       toast("Please save your progress before continuing", {
         description: "Click the Save button to save your changes",
       });
@@ -377,7 +378,8 @@ export default function CreateOnePagerPage() {
                   <Button 
                     variant="default" 
                     onClick={handleConfirm}
-                    disabled={!currentStepSaved}
+                    // Enable Next button for the first step (inputs)
+                    disabled={activeStep !== "inputs" && !currentStepSaved}
                     className="bg-green-600 hover:bg-green-700"
                   >
                     {activeStep === steps[steps.length - 1].id ? "Finish" : "Next"}
