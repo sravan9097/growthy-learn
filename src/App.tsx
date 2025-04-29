@@ -18,6 +18,7 @@ import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 import CreateOnePagerPage from "./pages/CreateOnePagerPage";
 import OnePagerDetailPage from "./pages/OnePagerDetailPage";
+import OnePagerListPage from "./pages/OnePagerListPage";
 import AllOnePagersPage from "./pages/AllOnePagersPage";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/til-dashboard" element={<TILDashboardPage />} />
             <Route path="/reflect" element={<ReflectPage />} />
             <Route path="/growth-journey" element={<GrowthJourneyPage />} />
+            <Route path="/one-pager" element={<OnePagerListPage />} />
             <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
             <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
             <Route path="/all-one-pagers" element={<AllOnePagersPage />} />
