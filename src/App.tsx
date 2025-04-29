@@ -44,6 +44,7 @@ const App = () => (
             <Route path="/one-pager" element={<OnePagerListPage />} />
             <Route path="/create-one-pager" element={<CreateOnePagerPage />} />
             <Route path="/one-pager/:id" element={<OnePagerDetailPage />} />
+            <Route path="/one-pager/:id/edit" element={<CreateOnePagerPage />} />
             <Route path="/all-one-pagers" element={<AllOnePagersPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

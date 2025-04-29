@@ -6,13 +6,14 @@ import { OnePagerPreview } from "@/components/onepager/OnePagerPreview";
 import { useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ChevronUp, ChevronDown, Check, RefreshCw } from "lucide-react";
+import { ArrowLeft, ChevronUp, ChevronDown, Check, RefreshCw, Save } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 
 export default function CreateOnePagerPage() {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast: oldToast } = useToast();
   const [activeStep, setActiveStep] = useState("inputs");
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({
@@ -21,6 +22,8 @@ export default function CreateOnePagerPage() {
   const [content, setContent] = useState<Record<string, string>>({});
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [currentStepSaved, setCurrentStepSaved] = useState(false);
+  const [showPreviewOnLeft, setShowPreviewOnLeft] = useState(false);
 
   // Define step ordering for navigation
   const steps = [
@@ -40,6 +43,11 @@ export default function CreateOnePagerPage() {
       setContent(prev => ({ ...prev, keyTakeaway: sampleKeyTakeaway }));
     }
   }, []);
+
+  // Reset currentStepSaved when changing active step
+  useEffect(() => {
+    setCurrentStepSaved(completedSteps.includes(activeStep));
+  }, [activeStep, completedSteps]);
 
   // Placeholder for generated content based on user inputs
   const getGeneratedContent = (step: string) => {
@@ -74,11 +82,16 @@ export default function CreateOnePagerPage() {
 
   const handleContentChange = (id: string, value: string) => {
     setContent(prev => ({ ...prev, [id]: value }));
+    // Reset current step saved status when content changes
+    setCurrentStepSaved(false);
   };
 
   const handleConfirm = () => {
-    if (!completedSteps.includes(activeStep)) {
-      setCompletedSteps(prev => [...prev, activeStep]);
+    if (!currentStepSaved) {
+      toast("Please save your progress before continuing", {
+        description: "Click the Save button to save your changes",
+      });
+      return;
     }
     
     // Find the next step in sequence
@@ -101,7 +114,7 @@ export default function CreateOnePagerPage() {
   };
 
   const handlePublish = () => {
-    toast({
+    oldToast({
       title: "One-Pager Published!",
       description: "Your one-pager has been successfully published.",
     });
@@ -114,9 +127,22 @@ export default function CreateOnePagerPage() {
     // Simulate saving
     setTimeout(() => {
       setIsSaving(false);
-      toast({
-        title: "Draft Saved",
-        description: "Your one-pager draft has been saved.",
+      
+      // Add current step to completed steps
+      if (!completedSteps.includes(activeStep)) {
+        setCompletedSteps(prev => [...prev, activeStep]);
+      }
+      
+      // Set current step as saved
+      setCurrentStepSaved(true);
+      
+      // Show left preview after saving first step
+      if (activeStep === "inputs") {
+        setShowPreviewOnLeft(true);
+      }
+      
+      toast.success("Draft Saved", {
+        description: "Your one-pager progress has been saved.",
       });
     }, 1000);
   };
@@ -184,19 +210,13 @@ export default function CreateOnePagerPage() {
             {/* Expanded step content */}
             {isExpanded && (
               <div className="mt-2">
-                {isActive ? (
-                  <StepContentNew
-                    step={step.id}
-                    content={content}
-                    onChange={handleContentChange}
-                    onUseGenerated={handleUseGenerated}
-                    generatedContent={getGeneratedContent(step.id)}
-                    keyTakeaway={content.keyTakeaway || sampleKeyTakeaway}
-                  />
-                ) : (
+                {showPreviewOnLeft ? (
                   <div 
-                    className="bg-gray-50 rounded p-3 text-sm cursor-pointer"
-                    onClick={() => handleStepChange(step.id)}
+                    className={cn(
+                      "bg-gray-50 rounded p-3 text-sm cursor-pointer",
+                      isActive && "border-green-500 border-2"
+                    )}
+                    onClick={() => !isCompleted && handleStepChange(step.id)}
                   >
                     {content[step.id] ? (
                       <div className="line-clamp-3">{content[step.id]}</div>
@@ -204,6 +224,15 @@ export default function CreateOnePagerPage() {
                       <div className="text-muted-foreground italic">No content yet. Click to add.</div>
                     )}
                   </div>
+                ) : (
+                  activeStep === "inputs" && step.id === "inputs" && (
+                    <div 
+                      className="bg-gray-50 rounded p-3 text-sm cursor-pointer"
+                      onClick={() => handleStepChange(step.id)}
+                    >
+                      <div className="text-muted-foreground italic">Attach supporting artifacts</div>
+                    </div>
+                  )
                 )}
               </div>
             )}
@@ -211,6 +240,41 @@ export default function CreateOnePagerPage() {
         </div>
       </div>
     );
+  };
+
+  const getCurrentStepTitle = () => {
+    switch (activeStep) {
+      case "inputs":
+        return "Attach Supporting Artifacts";
+      case "how-it-works":
+        return "Compose 'How it Works?'";
+      case "use-cases":
+        return "Compose 'Use-Cases'";
+      case "problem-statement":
+        return "Compose 'Problem Statement'";
+      case "conclusion":
+        return "Compose 'Conclusion'";
+      case "title":
+        return "Compose 'Title'";
+      default:
+        return "";
+    }
+  };
+
+  const getCurrentStepDescription = () => {
+    switch (activeStep) {
+      case "inputs":
+        return "Add code, diagrams, or data to bring clarity and depth to your one-pager as per the Mentor suggestion";
+      case "how-it-works":
+      case "use-cases":
+      case "problem-statement":
+      case "conclusion":
+        return "Growthy creates a first draft using your key takeaway and the visual. Refine it with your feedback.";
+      case "title":
+        return "Create a compelling title for your one-pager";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -243,71 +307,80 @@ export default function CreateOnePagerPage() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left side: Step navigation */}
+          {/* Left side: Step navigation and preview */}
           <div className="border rounded-lg p-6 bg-white">
+            {/* Show step navigation */}
             {steps.map((step, index) => renderStepItem(step, index))}
+            
+            {/* Show preview only after first step is saved */}
+            {showPreviewOnLeft && activeStep !== "inputs" && (
+              <div className="mt-6 pt-6 border-t">
+                <h3 className="text-lg font-medium mb-4">Preview</h3>
+                <div className="space-y-4">
+                  {steps.slice(1).map(step => {
+                    if (!content[step.id]) return null;
+                    return (
+                      <div key={`preview-${step.id}`} className="mb-4">
+                        <h4 className="text-base font-medium mb-1">{step.title}</h4>
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {content[step.id]}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Right side: Active step editor */}
           <div className="border rounded-lg p-6 bg-white">
             <div className="flex flex-col h-full">
-              {steps.map(step => (
-                <div key={step.id} className={activeStep === step.id ? "block" : "hidden"}>
-                  <h2 className="text-xl font-medium mb-2">
-                    {step.id === "inputs" ? "Attach Supporting Artifacts" : `Compose '${step.title}'`}
-                  </h2>
-                  <p className="text-muted-foreground mb-4">
-                    {step.id === "inputs" 
-                      ? "Add code, diagrams, or data to bring clarity and depth to your one-pager as per the Mentor suggestion" 
-                      : "Growthy creates a first draft using your key takeaway and the visual. Refine it with your feedback."}
-                  </p>
-                  
-                  {activeStep === "inputs" && (
-                    <>
-                      <div className="mt-4">
-                        <h3 className="text-base font-medium mb-2">Suggested Artifacts by Mentor</h3>
-                        <div className="p-4 bg-gray-50 border rounded-md text-sm mb-4">
-                          Take a use case of Awesome screenshot. Come up with an example manifest file for the extension to work -&gt; with all the important keys needed and how they affect the interaction with the web page. Convert this into an image which describes each field in the manifest file. &lt;Anatomy of Manifest file&gt;
-                        </div>
-                        
-                        <h3 className="text-base font-medium mb-2">Supporting Artifacts</h3>
-                        <div className="flex gap-4 mb-4">
-                          <Button variant="outline" className="font-normal">Attach Supporting Artifacts</Button>
-                          <Button variant="outline" className="font-normal">Add Code Snipet</Button>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
+              <h2 className="text-xl font-medium mb-2">
+                {getCurrentStepTitle()}
+              </h2>
+              <p className="text-muted-foreground mb-4">
+                {getCurrentStepDescription()}
+              </p>
               
+              <StepContentNew
+                step={activeStep}
+                content={content}
+                onChange={handleContentChange}
+                onUseGenerated={handleUseGenerated}
+                generatedContent={getGeneratedContent(activeStep)}
+                keyTakeaway={content.keyTakeaway || sampleKeyTakeaway}
+              />
+              
+              {/* Save and Next buttons */}
               <div className="mt-auto">
-                {activeStep !== "inputs" && (
-                  <div className="flex justify-end mt-8">
-                    <Button 
-                      variant="default" 
-                      onClick={handleConfirm}
-                      disabled={!content[activeStep]}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      {activeStep === steps[steps.length - 1].id ? "Finish" : "Next"}
-                    </Button>
-                  </div>
-                )}
-                
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-end mt-6">
                   <Button 
                     variant="outline"
                     onClick={handleSave}
-                    disabled={isSaving}
-                    className="ml-auto"
+                    disabled={isSaving || !content[activeStep] || currentStepSaved}
+                    className="mr-2"
                   >
                     {isSaving ? (
                       <>
                         <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                         Saving...
                       </>
-                    ) : "Save"}
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Save
+                      </>
+                    )}
+                  </Button>
+                  
+                  <Button 
+                    variant="default" 
+                    onClick={handleConfirm}
+                    disabled={!currentStepSaved}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    {activeStep === steps[steps.length - 1].id ? "Finish" : "Next"}
                   </Button>
                 </div>
               </div>
